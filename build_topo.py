@@ -59,10 +59,10 @@ def check(spec):
     problems = []
     seen = {}
 
+    # Check 1: Duplicate IP addresses on hosts
     for host in spec.get("hosts", []):
         host_name = host.get("name")
         
-        # Check both IPv4 and IPv6 keys
         for key in ("ip", "ipv6"):
             if key in host and host[key]:
                 # Strip prefix length (everything from '/' onward)
@@ -74,6 +74,16 @@ def check(spec):
                     )
                 else:
                     seen[addr] = host_name
+
+    # Check 2: Verify every link names a switch or host that exists
+    defined_hosts = {h["name"] for h in spec.get("hosts", []) if "name" in h}
+    defined_switches = set(spec.get("switches", []))
+    valid_nodes = defined_hosts | defined_switches
+
+    for link in spec.get("links", []):
+        for node in link:
+            if node not in valid_nodes:
+                problems.append(f"PROBLEM: link refers to unknown node {node}")
 
     return problems
 
