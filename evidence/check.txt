@@ -1,0 +1,4 @@
+PROBLEM: PROBLEM: h6 and h5 both use 10.85.0.5
+PROBLEM: PROBLEM: h6 and h5 both use fd00:4885::5
+PROBLEM: PROBLEM: link refers to unknown node s9
+Fix the description and try again.
