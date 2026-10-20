@@ -8,22 +8,28 @@ repository: https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
 answers:
   planes:
     question: "Where are the data, control and management planes in your network?"
-    answer: ""
+    answer: "The data plane is the Linux bridges and links forwarding frames, the control plane is MAC learning, ARP, and IPv6 Neighbor Discovery, and the management plane is build_topo.py, make_page.py, and Mininet CLI."
+
   learning:
     question: "How did your switches learn which port leads to each host? Use your MAC table evidence."
-    answer: ""
+    answer: "Switches learned ports dynamically by inspecting source MAC addresses of frames during pingall, mapping MACs like 00:00:00:00:00:01 to specific ports in evidence/macs.txt."
+
   kind:
     question: "Which of the four kinds of programmability is this assignment (a network described as data, then built and documented by scripts)? Why isn't it any of the other three?"
-    answer: ""
+    answer: "This is Infrastructure as Code (network as data), not on-box scripting (no scripts on devices), not device APIs (no NETCONF/RESTCONF), and not SDN (no OpenFlow controller)."
+
   two_am:
     question: "Week 1's 2 a.m. change on 40 switches: what would be different if those switches were described like your network?"
-    answer: ""
+    answer: "You would edit topology.yaml and run check() to validate changes automatically instead of SSHing into 40 individual switches."
+
   model:
     question: "What's the difference between your network's data model and its serialisation? Use YAML and JSON as the example."
-    answer: ""
+    answer: "The data model is the Python dictionary of nodes and links in memory, while serialization is the text file format used to store or embed it like topology.yaml or JSON."
+
   check:
     question: "Why is it better to catch bad data in check() than with pingall? What did IPv6 notice about a duplicate address that IPv4 didn't?"
-    answer: ""
+    answer: "check() stops bad configs before build_topo.py runs, while IPv6 DAD flagged duplicate IPs as dadfailed tentative in evidence/dad.txt whereas IPv4 silently added a secondary IP."
+
   git:
     question: "What does your Git history give you that copying files into folders named topology-v2-final wouldn't?"
-    answer: ""
+    answer: "Git provides exact line-by-line history, commit messages, and rollback capabilities without cluttering the directory with copied folders."

@@ -58,26 +58,21 @@ def hosts_section(spec):
 
 
 def links_section(spec):
-    """TODO (assignment): return HTML listing every link in spec["links"].
-
-    For example, for links [h1, s1] and [s1, s2] return:
-        <ul><li>h1 — s1</li><li>s1 — s2</li></ul>
-    Use esc() on every name, as hosts_section() does.
-    """
-    return "<p>TODO: list the links.</p>"
-
+    """Return HTML listing every link in spec["links"]."""
+    items = "".join(f"<li>{esc(n1)} — {esc(n2)}</li>" for n1, n2 in spec.get("links", []))
+    return f"<ul>{items}</ul>"
 
 def mermaid_diagram(spec):
-    """TODO (assignment): return Mermaid text that draws the network, built from spec["links"].
+    """Return Mermaid text that draws the network, built from spec["links"]."""
+    host_ips = {h["name"]: h["ip"].split("/")[0] for h in spec.get("hosts", []) if "ip" in h}
 
-    Mermaid turns text like this into a diagram in the browser:
-        graph LR
-          h1 --- s1
-          s1 --- s2
-    Start with "graph LR", then add one line per link. For extra credit, show each host's
-    IPv4 address in its box, e.g.  h1["h1<br>10.NN.0.1"] --- s1
-    """
-    return "graph LR\n  todo[Diagram not generated yet]"
+    lines = ["graph LR"]
+    for n1, n2 in spec.get("links", []):
+        lbl1 = f'{n1}["{n1}<br>{host_ips[n1]}"]' if n1 in host_ips else n1
+        lbl2 = f'{n2}["{n2}<br>{host_ips[n2]}"]' if n2 in host_ips else n2
+        lines.append(f"  {lbl1} --- {lbl2}")
+
+    return "\n".join(lines)
 
 
 def evidence_section(ev_id, path, title):
