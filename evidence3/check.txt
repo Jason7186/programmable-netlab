@@ -1,0 +1,9 @@
+$ python3 build_routed.py loop.yaml
+PROBLEM: h1 -> h3: loop r1 -> r4 -> r1
+PROBLEM: h4 -> h3: loop r4 -> r1 -> r4
+Fix the description and try again: nothing was built.
+
+$ python3 build_routed.py missing.yaml
+PROBLEM: h3 -> h1: r3 has no route to 10.85.1.10 (path r3)
+Fix the description and try again: nothing was built.
+

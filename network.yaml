@@ -1,0 +1,71 @@
+# network.yaml: my routed network, as data.
+#
+#   python3 build_routed.py network.yaml      checks it, then builds it in Mininet
+#   python3 make_page3.py network.yaml        checks it, then writes docs/week3/index.html
+#
+# Each LAN has one router (.1 on the LAN) and one host (.10).
+# On each link, the first router named is .1 and the second is .2.
+#
+# Design: four routers in a ring, r1 - r2 - r3 - r4 - r1, so every pair of routers has two
+# ways to reach each other. One LAN per router.
+#
+#   r1 lan-h1 10.85.1.0/24       r2 lan-h2 10.85.2.0/24
+#   r3 lan-h3 10.85.32.0/24      r4 lan-h4 10.85.33.0/24
+#
+# lan-h3 and lan-h4 sit side by side in 10.85.32.0/23, so r1 and r2 reach both with one
+# summary route each. The /23 covers exactly those two LANs and nothing else.
+# Each link's third octet names its two routers: 12 = r1-r2, 23 = r2-r3, 34 = r3-r4, 41 = r4-r1.
+
+student_id_last4: "4885"
+
+routers: [r1, r2, r3, r4]
+
+lans:
+  - name: lan-h1
+    network: 10.85.1.0/24
+    router: r1
+    host: h1
+  - name: lan-h2
+    network: 10.85.2.0/24
+    router: r2
+    host: h2
+  - name: lan-h3
+    network: 10.85.32.0/24
+    router: r3
+    host: h3
+  - name: lan-h4
+    network: 10.85.33.0/24
+    router: r4
+    host: h4
+
+links:
+  - [r1, r2, 10.85.12.0/30]   # r1 10.85.12.1, r2 10.85.12.2
+  - [r2, r3, 10.85.23.0/30]   # r2 10.85.23.1, r3 10.85.23.2
+  - [r3, r4, 10.85.34.0/30]   # r3 10.85.34.1, r4 10.85.34.2
+  - [r4, r1, 10.85.41.0/30]   # r4 10.85.41.1, r1 10.85.41.2
+
+routes:
+  r1:
+    - to: 10.85.2.0/24
+      via: 10.85.12.2         # r2
+    - to: 10.85.32.0/23       # summary: lan-h3 + lan-h4
+      via: 10.85.41.1         # r4
+  r2:
+    - to: 10.85.1.0/24
+      via: 10.85.12.1         # r1
+    - to: 10.85.32.0/23       # summary: lan-h3 + lan-h4
+      via: 10.85.23.2         # r3
+  r3:
+    - to: 10.85.1.0/24
+      via: 10.85.23.1         # r2
+    - to: 10.85.2.0/24
+      via: 10.85.23.1         # r2
+    - to: 10.85.33.0/24
+      via: 10.85.34.2         # r4
+  r4:
+    - to: 10.85.1.0/24
+      via: 10.85.41.2         # r1
+    - to: 10.85.2.0/24
+      via: 10.85.41.2         # r1
+    - to: 10.85.32.0/24
+      via: 10.85.34.1         # r3

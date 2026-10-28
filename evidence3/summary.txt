@@ -1,0 +1,30 @@
+# r1 and r2 have ONE route, 10.85.32.0/23, for both lan-h3 and lan-h4.
+
+r1$ ip route show 10.85.32.0/23
+10.85.32.0/23 via 10.85.41.1 dev r1-eth2
+
+r1$ ip route get 10.85.32.10
+10.85.32.10 via 10.85.41.1 dev r1-eth2 src 10.85.41.2 uid 0 
+    cache
+
+r1$ ip route get 10.85.33.10
+10.85.33.10 via 10.85.41.1 dev r1-eth2 src 10.85.41.2 uid 0 
+    cache
+
+r2$ ip route show 10.85.32.0/23
+10.85.32.0/23 via 10.85.23.2 dev r2-eth2
+
+r2$ ip route get 10.85.32.10
+10.85.32.10 via 10.85.23.2 dev r2-eth2 src 10.85.23.1 uid 0 
+    cache
+
+r2$ ip route get 10.85.33.10
+10.85.33.10 via 10.85.23.2 dev r2-eth2 src 10.85.23.1 uid 0 
+    cache
+
+# A host address in the /23 that no LAN uses is attracted the same way:
+
+r1$ ip route get 10.85.33.200
+10.85.33.200 via 10.85.41.1 dev r1-eth2 src 10.85.41.2 uid 0 
+    cache
+

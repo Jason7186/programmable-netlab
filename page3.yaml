@@ -1,0 +1,26 @@
+# page3.yaml: the words on your Week 3 page. make_page3.py puts each answer under its question.
+# A few sentences each, in your own words, about YOUR network and YOUR evidence.
+# Leave a blank line between paragraphs. Never put your name or full student ID here.
+
+repository: https://github.com/Jason7186/programmable-netlab
+
+answers:
+  design:
+    question: "Describe your design: why these routers, LANs and links, and how you chose the addresses."
+    answer: |
+      Four routers, r1 to r4, are joined in a ring (r1-r2-r3-r4-r1), and each router has one LAN with one host. A ring is the smallest shape where every pair of routers has two ways to reach each other, so it gives the redundant path the design needs without extra links. Everything sits in my block 10.85.0.0/16. The LANs are /24s: lan-h1 is 10.85.1.0/24 on r1 and lan-h2 is 10.85.2.0/24 on r2. I put lan-h3 (10.85.32.0/24 on r3) and lan-h4 (10.85.33.0/24 on r4) side by side on purpose, so together they make exactly one /23 that r1 and r2 can reach with a single summary route. The router links are /30s, because a link only needs two addresses, and each link's third octet names its two routers: 10.85.12.0/30 is r1-r2, 23 is r2-r3, 34 is r3-r4 and 41 is r4-r1.
+
+  summary:
+    question: "Which route summarises several LANs? Which networks does it cover, why is it correct, and what else would it attract if you added a network inside its range?"
+    answer: |
+      10.85.32.0/23 is the summary. r1 has it via r4 (10.85.41.1) and r2 has it via r3 (10.85.23.2). It covers lan-h3 (10.85.32.0/24) and lan-h4 (10.85.33.0/24), but not lan-h1 or lan-h2. In summary.txt, ip route get on r1 sends both 10.85.32.10 and 10.85.33.10 out the same route. It's correct because the next hop it points to knows how to reach both LANs inside it. From r1, r4 is directly connected to lan-h4 and has a /24 route to lan-h3 via r3. From r2, r3 is directly connected to lan-h3 and has a /24 route to lan-h4 via r4. check_paths() confirms every host pair still gets through. The summary matches every address from 10.85.32.0 to 10.85.33.255, not just the two hosts. summary.txt shows r1 sending 10.85.33.200, which no host uses, towards r4 as well. If I added a new network inside the range, for example a /25 hanging off r2, r1 and r2 would still send its traffic to r4 and r3 by the summary, not to where it really is, unless I added a more specific route. Because the longest prefix wins, that more specific route would override the summary.
+
+  failure:
+    question: "When you took a link down, what happened, and why couldn't your routes recover even though another path existed? What would have recovered?"
+    answer: |
+      I took the r1-r4 link down. r1's 10.85.32.0/23 route disappeared from its table, because its next hop was on the interface that went down, and ip route get 10.85.32.10 answered "Network is unreachable". h1 then got "Destination Net Unreachable" from r1 for both h3 and h4. failure.txt shows the other way round the ring still worked: h1 could reach h2, and r2 could reach h3. The routes couldn't recover because they were static. I typed every route in by hand, and nothing on r1 knows the network's shape, so nothing can work out that r2 and r3 are a second way to lan-h3 and lan-h4. Even bringing the link back up didn't fix it: Linux had deleted the static route when the interface went down, so h1 still couldn't reach h3 until the route was added again. A dynamic routing protocol such as OSPF would have recovered. The routers would notice the link was gone, share that with each other, recalculate, and install routes through r2 and r3 on their own, then switch back when the link returned.
+
+  control_plane:
+    question: "In your network, what was the control plane? Who worked out the routes, and what does that mean for a network of 40 routers?"
+    answer: |
+      The control plane was me, plus network.yaml and build_routed.py. I worked out every route by hand, check_paths() checked them for loops and missing routes, and build_routed.py installed them with ip route add. The routers only did the data plane: they looked up each packet's destination in a table someone else had filled in, and did longest-prefix match.Four routers needed 10 static routes, and one link failure already broke reachability with nothing to fix it. With 40 routers there would be hundreds of routes to work out and keep consistent, and every change or failure would mean recomputing and reinstalling them by hand. That's slow and easy to get wrong. A network that size needs a real control plane: a routing protocol running on the routers, or a central controller (as in SDN) that computes the routes from the topology and pushes them out automatically.

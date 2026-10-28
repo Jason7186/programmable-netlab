@@ -1,0 +1,89 @@
+# Every host pings every other host (like pingall, hosts only)
+h1 -> h2 h3 h4
+h2 -> h1 h3 h4
+h3 -> h1 h2 h4
+h4 -> h1 h2 h3
+
+# A '*' on the middle router of a 3-router path (e.g. r3 on h1 -> h3) is expected: that router
+# answers from a link address (r3 uses 10.85.23.2), the reply comes back a different way round
+# the ring, and the first router (r1) has no route to that /30, so its reverse-path filter
+# (rp_filter=2) drops it. The static routes only cover the LANs, not the links.
+
+h1$ traceroute -n -q 1 -w 1 10.85.2.10
+traceroute to 10.85.2.10 (10.85.2.10), 30 hops max, 60 byte packets
+ 1  10.85.1.1  0.037 ms
+ 2  10.85.12.2  0.010 ms
+ 3  10.85.2.10  0.011 ms
+
+h1$ traceroute -n -q 1 -w 1 10.85.32.10
+traceroute to 10.85.32.10 (10.85.32.10), 30 hops max, 60 byte packets
+ 1  10.85.1.1  0.017 ms
+ 2  10.85.41.1  0.025 ms
+ 3  *
+ 4  10.85.32.10  0.011 ms
+
+h1$ traceroute -n -q 1 -w 1 10.85.33.10
+traceroute to 10.85.33.10 (10.85.33.10), 30 hops max, 60 byte packets
+ 1  10.85.1.1  0.025 ms
+ 2  10.85.41.1  0.011 ms
+ 3  10.85.33.10  0.012 ms
+
+h2$ traceroute -n -q 1 -w 1 10.85.1.10
+traceroute to 10.85.1.10 (10.85.1.10), 30 hops max, 60 byte packets
+ 1  10.85.2.1  0.029 ms
+ 2  10.85.12.1  0.056 ms
+ 3  10.85.1.10  0.010 ms
+
+h2$ traceroute -n -q 1 -w 1 10.85.32.10
+traceroute to 10.85.32.10 (10.85.32.10), 30 hops max, 60 byte packets
+ 1  10.85.2.1  0.012 ms
+ 2  10.85.23.2  0.028 ms
+ 3  10.85.32.10  0.010 ms
+
+h2$ traceroute -n -q 1 -w 1 10.85.33.10
+traceroute to 10.85.33.10 (10.85.33.10), 30 hops max, 60 byte packets
+ 1  10.85.2.1  0.011 ms
+ 2  10.85.23.2  0.007 ms
+ 3  *
+ 4  10.85.33.10  0.020 ms
+
+h3$ traceroute -n -q 1 -w 1 10.85.1.10
+traceroute to 10.85.1.10 (10.85.1.10), 30 hops max, 60 byte packets
+ 1  10.85.32.1  0.024 ms
+ 2  10.85.23.1  0.066 ms
+ 3  *
+ 4  10.85.1.10  0.012 ms
+
+h3$ traceroute -n -q 1 -w 1 10.85.2.10
+traceroute to 10.85.2.10 (10.85.2.10), 30 hops max, 60 byte packets
+ 1  10.85.32.1  0.026 ms
+ 2  10.85.23.1  0.011 ms
+ 3  10.85.2.10  0.014 ms
+
+h3$ traceroute -n -q 1 -w 1 10.85.33.10
+traceroute to 10.85.33.10 (10.85.33.10), 30 hops max, 60 byte packets
+ 1  10.85.32.1  0.016 ms
+ 2  10.85.34.2  0.012 ms
+ 3  10.85.33.10  0.011 ms
+
+h4$ traceroute -n -q 1 -w 1 10.85.1.10
+traceroute to 10.85.1.10 (10.85.1.10), 30 hops max, 60 byte packets
+ 1  10.85.33.1  0.015 ms
+ 2  10.85.41.2  0.010 ms
+ 3  10.85.1.10  0.012 ms
+
+h4$ traceroute -n -q 1 -w 1 10.85.2.10
+traceroute to 10.85.2.10 (10.85.2.10), 30 hops max, 60 byte packets
+ 1  10.85.33.1  0.011 ms
+ 2  10.85.41.2  0.008 ms
+ 3  *
+ 4  10.85.2.10  0.012 ms
+
+h4$ traceroute -n -q 1 -w 1 10.85.32.10
+traceroute to 10.85.32.10 (10.85.32.10), 30 hops max, 60 byte packets
+ 1  10.85.33.1  0.037 ms
+ 2  10.85.34.1  0.011 ms
+ 3  10.85.32.10  0.011 ms
+
+mininet> pingall
+pingall: 14.285714285714286% dropped
