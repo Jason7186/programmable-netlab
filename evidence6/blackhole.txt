@@ -1,0 +1,83 @@
+PING 10.85.50.11 (10.85.50.11) 56(84) bytes of data.
+64 bytes from 10.85.50.11: icmp_seq=1 ttl=64 time=0.432 ms
+64 bytes from 10.85.50.11: icmp_seq=2 ttl=64 time=0.103 ms
+
+--- 10.85.50.11 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1000ms
+rtt min/avg/max/mdev = 0.103/0.267/0.432/0.164 ms
+PING 10.85.50.11 (10.85.50.11) 1472(1500) bytes of data.
+
+--- 10.85.50.11 ping statistics ---
+2 packets transmitted, 0 received, 100% packet loss, time 1000ms
+
+Connecting to host 10.85.50.11, port 5201
+[  5] local 10.85.50.10 port 52302 connected to 10.85.50.11 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  0.00 Bytes  0.00 bits/sec    2   1.41 KBytes       
+[  5]   1.00-2.00   sec  0.00 Bytes  0.00 bits/sec    1   1.41 KBytes       
+[  5]   2.00-3.00   sec  0.00 Bytes  0.00 bits/sec    0   1.41 KBytes       
+[  5]   3.00-4.00   sec  0.00 Bytes  0.00 bits/sec    1   1.41 KBytes       
+[  5]   4.00-5.00   sec  0.00 Bytes  0.00 bits/sec    0   1.41 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-5.00   sec  0.00 Bytes  0.00 bits/sec    4             sender
+[  5]   0.00-5.00   sec  0.00 Bytes  0.00 bits/sec                  receiver
+
+iperf Done.
+-- size 1400
+PING 10.85.50.11 (10.85.50.11) 1400(1428) bytes of data.
+1408 bytes from 10.85.50.11: icmp_seq=1 ttl=64 time=0.081 ms
+
+--- 10.85.50.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.081/0.081/0.081/0.000 ms
+-- size 1421
+PING 10.85.50.11 (10.85.50.11) 1421(1449) bytes of data.
+1429 bytes from 10.85.50.11: icmp_seq=1 ttl=64 time=0.090 ms
+
+--- 10.85.50.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.090/0.090/0.090/0.000 ms
+-- size 1422
+PING 10.85.50.11 (10.85.50.11) 1422(1450) bytes of data.
+1430 bytes from 10.85.50.11: icmp_seq=1 ttl=64 time=0.062 ms
+
+--- 10.85.50.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.062/0.062/0.062/0.000 ms
+-- size 1423
+PING 10.85.50.11 (10.85.50.11) 1423(1451) bytes of data.
+
+--- 10.85.50.11 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+-- size 1424
+PING 10.85.50.11 (10.85.50.11) 1424(1452) bytes of data.
+
+--- 10.85.50.11 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+-- size 1425
+PING 10.85.50.11 (10.85.50.11) 1425(1453) bytes of data.
+
+--- 10.85.50.11 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+-- size 1426
+PING 10.85.50.11 (10.85.50.11) 1426(1454) bytes of data.
+
+--- 10.85.50.11 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+-- size 1427
+PING 10.85.50.11 (10.85.50.11) 1427(1455) bytes of data.
+
+--- 10.85.50.11 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+-- size 1472
+PING 10.85.50.11 (10.85.50.11) 1472(1500) bytes of data.
+
+--- 10.85.50.11 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+

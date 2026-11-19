@@ -1,0 +1,47 @@
+PING 10.85.50.11 (10.85.50.11) 56(84) bytes of data.
+64 bytes from 10.85.50.11: icmp_seq=1 ttl=64 time=0.084 ms
+64 bytes from 10.85.50.11: icmp_seq=2 ttl=64 time=0.078 ms
+64 bytes from 10.85.50.11: icmp_seq=3 ttl=64 time=0.125 ms
+
+--- 10.85.50.11 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2023ms
+rtt min/avg/max/mdev = 0.078/0.095/0.125/0.020 ms
+10.85.50.11 dev red1-eth0 lladdr 02:00:00:64:00:0b DELAY 
+== captured on blue2 meanwhile
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on blue2-eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+
+0 packets captured
+0 packets received by filter
+0 packets dropped by kernel
+PING 10.85.50.11 (10.85.50.11) 56(84) bytes of data.
+64 bytes from 10.85.50.11: icmp_seq=1 ttl=64 time=0.144 ms
+64 bytes from 10.85.50.11: icmp_seq=2 ttl=64 time=0.125 ms
+
+--- 10.85.50.11 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1000ms
+rtt min/avg/max/mdev = 0.125/0.134/0.144/0.009 ms
+10.85.50.11 dev blue1-eth0 lladdr 02:00:00:c8:00:0b REACHABLE 
+== hv3 underlay during blue1's ping
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on hv3-eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+07:20:38.958903 72:90:5a:fc:b4:e9 > 92:88:6a:01:49:58, ethertype IPv4 (0x0800), length 92: 10.85.0.1.59455 > 10.85.0.3.4789: VXLAN, flags [I] (0x08), vni 200
+02:00:00:c8:00:0a > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 10.85.50.11 tell 10.85.50.10, length 28
+07:20:38.958936 92:88:6a:01:49:58 > 72:90:5a:fc:b4:e9, ethertype IPv4 (0x0800), length 92: 10.85.0.3.59455 > 10.85.0.1.4789: VXLAN, flags [I] (0x08), vni 200
+02:00:00:c8:00:0b > 02:00:00:c8:00:0a, ethertype ARP (0x0806), length 42: Reply 10.85.50.11 is-at 02:00:00:c8:00:0b, length 28
+07:20:38.958951 72:90:5a:fc:b4:e9 > 92:88:6a:01:49:58, ethertype IPv4 (0x0800), length 148: 10.85.0.1.35631 > 10.85.0.3.4789: VXLAN, flags [I] (0x08), vni 200
+02:00:00:c8:00:0a > 02:00:00:c8:00:0b, ethertype IPv4 (0x0800), length 98: 10.85.50.10 > 10.85.50.11: ICMP echo request, id 252, seq 1, length 64
+07:20:38.958962 92:88:6a:01:49:58 > 72:90:5a:fc:b4:e9, ethertype IPv4 (0x0800), length 148: 10.85.0.3.35631 > 10.85.0.1.4789: VXLAN, flags [I] (0x08), vni 200
+02:00:00:c8:00:0b > 02:00:00:c8:00:0a, ethertype IPv4 (0x0800), length 98: 10.85.50.11 > 10.85.50.10: ICMP echo reply, id 252, seq 1, length 64
+07:20:39.974821 72:90:5a:fc:b4:e9 > 92:88:6a:01:49:58, ethertype IPv4 (0x0800), length 148: 10.85.0.1.35631 > 10.85.0.3.4789: VXLAN, flags [I] (0x08), vni 200
+02:00:00:c8:00:0a > 02:00:00:c8:00:0b, ethertype IPv4 (0x0800), length 98: 10.85.50.10 > 10.85.50.11: ICMP echo request, id 252, seq 2, length 64
+07:20:39.974849 92:88:6a:01:49:58 > 72:90:5a:fc:b4:e9, ethertype IPv4 (0x0800), length 148: 10.85.0.3.35631 > 10.85.0.1.4789: VXLAN, flags [I] (0x08), vni 200
+02:00:00:c8:00:0b > 02:00:00:c8:00:0a, ethertype IPv4 (0x0800), length 98: 10.85.50.11 > 10.85.50.10: ICMP echo reply, id 252, seq 2, length 64
+07:20:43.999270 92:88:6a:01:49:58 > 72:90:5a:fc:b4:e9, ethertype IPv4 (0x0800), length 92: 10.85.0.3.59455 > 10.85.0.1.4789: VXLAN, flags [I] (0x08), vni 200
+02:00:00:c8:00:0b > 02:00:00:c8:00:0a, ethertype ARP (0x0806), length 42: Request who-has 10.85.50.10 tell 10.85.50.11, length 28
+07:20:43.999316 72:90:5a:fc:b4:e9 > 92:88:6a:01:49:58, ethertype IPv4 (0x0800), length 92: 10.85.0.1.59455 > 10.85.0.3.4789: VXLAN, flags [I] (0x08), vni 200
+02:00:00:c8:00:0a > 02:00:00:c8:00:0b, ethertype ARP (0x0806), length 42: Reply 10.85.50.10 is-at 02:00:00:c8:00:0a, length 28
+
+8 packets captured
+8 packets received by filter
+0 packets dropped by kernel
